@@ -14,6 +14,7 @@ class Contact
     # TODO: Assign parameter values to instance variables.
     @name = name
     @email = email
+
   end
 
   # Provides functionality for managing contacts in the csv file.
@@ -22,8 +23,21 @@ class Contact
     # Opens 'contacts.csv' and creates a Contact object for each line in the file (aka each contact).
     # @return [Array<Contact>] Array of Contact objects
     def all
-      # TODO: Return an Array of Contact instances made from the data in 'contacts.csv'.
-      CSV.read('list.csv')
+      all_contacts = []
+      CSV.foreach('list.csv') do |row|
+        all_contacts << Contact.new(row[0],row[1])
+      end
+      all_contacts
+      # all_contacts = []
+      # # TODO: Return an Array of Contact instances made from the data in 'contacts.csv'.
+      # CSV.foreach('list.csv') do |row|
+
+      #   all_contacts << Contact.new(row[0],row[1])
+      # end
+      
+
+      # all_contacts
+      # CSV.read('list.csv')
     end
 
     # Creates a new contact, adding it to the csv file, returning the new contact.
@@ -47,7 +61,7 @@ class Contact
     # @return [Contact, nil] the contact with the specified id. If no contact has the id, returns nil.
     def find(id)
       # TODO: Find the Contact in the 'contacts.csv' file with the matching id.
-      p all[id.to_i]
+      all[id.to_i]
     end
     
     # Search for contacts by either name or email.
@@ -58,7 +72,7 @@ class Contact
       ans = []
       CSV.foreach('list.csv') do |row|
         row.each do |col|
-          ans << row if col.include?(term)
+          ans << Contact.new(row[0], row[1]) if col.include?(term)
           break
         end
       end
