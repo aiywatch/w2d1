@@ -7,7 +7,26 @@ class ContactList
 
 end
 
+def display_contact(contacts)
+  i = 0
 
+  while !contacts[i].nil?
+
+    5.times do 
+      row = contacts[i]
+      i += 1
+      puts "#{i}: #{row[0]} (#{row[1]})"
+      break if contacts[i].nil?  
+    end
+    break if contacts[i].nil?  
+    puts "enter to continue ..."
+    $stdin.gets
+  end
+
+  puts "---"
+  puts "#{i} records total"
+
+end
 
 case ARGV[0]
 when "new"
@@ -16,17 +35,24 @@ when "new"
   puts "Please enter the email address"
   email = $stdin.gets.strip
   raise ArgumentError, "Name and Email must have value" if name.empty? or email.empty?
-  Contact.create(name, email)
+  phones = []
+  while true
+    puts "Optional phone number ('yes' to continue)"
+    opt = $stdin.gets.strip
+    break if opt != 'yes'
+    puts "home/work/mobile"
+    opt2 = $stdin.gets.strip
+    raise ArgumentError, "invalid input" if opt2 != 'home' and opt2 != 'work' and opt2 != 'mobile'
+    puts "enter phone number"
+    phone = $stdin.gets.strip
+    phones << opt2 + ':' + phone
+  end
+  p phones
+  Contact.create(name, email, phones)
   
 when "list"
   all_contact = Contact.all
-  i = 0
-  all_contact.each do |row|
-    i += 1
-    puts "#{i}: #{row[0]} (#{row[1]})"
-  end
-  puts "---"
-  puts "#{i} records total"
+  display_contact(all_contact)
 
 when "show"
   puts "show"

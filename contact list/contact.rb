@@ -29,16 +29,16 @@ class Contact
     # Creates a new contact, adding it to the csv file, returning the new contact.
     # @param name [String] the new contact's name
     # @param email [String] the contact's email
-    def create(name, email)
+    def create(name, email, phones = [])
       # TODO: Instantiate a Contact, add its data to the 'contacts.csv' file, and return it.
       all = CSV.read('list.csv').flatten
       if all.include?(email)
         puts "The email already exist"
       else
         CSV.open('list.csv', 'a') do |list|
-          list << [name, email]
+          list << [name, email, phones]
         end
-        p "#{name} with #{email} has been added}"
+        p "#{name} with #{email} and #{phones} has been added}"
       end
     end
       
